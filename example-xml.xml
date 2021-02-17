@@ -1,0 +1,21 @@
+<UILayout parentstate="-1">
+	<!-- UIPanel Attributes: ID, Position(X,Y), Size(Width,Height), Color, RenderLayer(foreground,midground,background) -->
+	<UIPanel id="example-panel" position="100,100" size="60,60" color="#4d00bf" layer="foreground"/>
+	
+	<!-- UIImage Attributes: ID, Position(X,Y), Size(Width,Height), Src, RenderLayer(foreground,midground,background) -->
+	<UIImage id="example-image" position="200,100" size="60,60" src="/images/gugino_logo.png" layer="foreground"/>
+	
+	<!-- UIString Attributes: ID, Position(X,Y), Color, RenderLayer(foreground,midground,background) -->
+	<UIString id="example-string" position="280,100" color="#4d00bf" layer="midground"/>
+	
+	<!-- UIButton Attributes: ID, Position(X,Y), Size(Width,Height), Colors(normal,hover,clicked), RenderLayer(foreground,midground,background) -->
+	<UIButton id="example-button-color" position="400,100" size="60,60" colors="light-gray,gray,dark-gray" layer="midground"/>
+	<!-- UIButton Attributes: ID, Position(X,Y), Size(Width,Height), Srcs(normal,hover,clicked), RenderLayer(foreground,midground,background) -->
+	<UIButton id="example-button-image" position="500,100" size="60,60" srcs="/images/gugino_logo.png,/images/gugino_logo.png,/images/gugino_logo.png" layer="midground"/>
+	
+	<!-- UIInputField Attributes: ID, Position(X,Y), Size(Width,Height), Color, RenderLayer(foreground,midground,background), Font-Color -->
+	<UIInputField id="example-input-color" position="600,100" size="60,60" color="red" layer="background" font-color="black"/>
+	<!-- UIInputField Attributes: ID, Position(X,Y), Size(Width,Height), Src, RenderLayer(foreground,midground,background), Font-Color -->
+	<UIInputField id="example-input-image" position="700,100" size="60,60" src="/images/gugino_logo.png" layer="background" font-color="yellow"/>
+</UILayout>
+
