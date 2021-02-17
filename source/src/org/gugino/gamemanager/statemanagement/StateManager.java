@@ -93,6 +93,10 @@ public class StateManager {
 		return null;
 	}
 	
+	public HashMap<Integer, State> getStates(){
+		return states;
+	}
+	
 	public int getCurrentStateID() {
 		return currentStateID;
 	}

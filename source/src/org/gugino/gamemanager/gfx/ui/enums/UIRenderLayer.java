@@ -1,4 +1,4 @@
-package org.gugino.gamemanager.gfx.ui;
+package org.gugino.gamemanager.gfx.ui.enums;
 
 public enum UIRenderLayer {
 	FOREGROUND,

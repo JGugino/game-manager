@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 
 import org.gugino.gamemanager.GameManager;
-import org.gugino.gamemanager.gfx.ui.UIRenderLayer;
+import org.gugino.gamemanager.gfx.ui.enums.UIRenderLayer;
 
 public abstract class UIItem {
 
@@ -27,6 +27,7 @@ public abstract class UIItem {
 		this.uiY = _y;
 		this.uiWidth = _width;
 		this.uiHeight = _height;
+		uiItemFont = defaultFont;
 	}
 
 	
