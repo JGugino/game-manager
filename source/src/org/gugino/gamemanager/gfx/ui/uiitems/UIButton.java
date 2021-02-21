@@ -13,6 +13,7 @@ public class UIButton extends UIItem{
 	private Color clickColor = Color.lightGray;
 	private Color hoverColor = Color.darkGray;
 	private Color backgroundColor = Color.gray;
+	private Color buttonTextColor = Color.black;
 	private BufferedImage backgroundImage = null;
 	private BufferedImage hoverImage = null;
 	private BufferedImage clickImage = null;
@@ -36,12 +37,31 @@ public class UIButton extends UIItem{
 		this.clickColor = _clickColor;
 		this.hasBackgroundImage = false;
 	}
+	
+	public UIButton(String _id, double _x, double _y, int _width, int _height, Color _backgroundColor, Color _hoverColor, Color _clickColor, Color _buttonTextColor) {
+		super(_id, _x, _y, _width, _height);
+		this.backgroundColor = _backgroundColor;
+		this.hoverColor = _hoverColor;
+		this.clickColor = _clickColor;
+		this.hasBackgroundImage = false;
+		this.buttonTextColor = _buttonTextColor;
+	}
+	
 	public UIButton(String _id, double _x, double _y, int _width, int _height, BufferedImage _backgroundImage, BufferedImage _hoverImage, BufferedImage _clickImage) {
 		super(_id, _x, _y, _width, _height);
 		this.backgroundImage = _backgroundImage;
 		this.hoverImage = _hoverImage;
 		this.clickImage = _clickImage;
 		this.hasBackgroundImage = true;
+	}
+	
+	public UIButton(String _id, double _x, double _y, int _width, int _height, BufferedImage _backgroundImage, BufferedImage _hoverImage, BufferedImage _clickImage, Color _buttonTextColor) {
+		super(_id, _x, _y, _width, _height);
+		this.backgroundImage = _backgroundImage;
+		this.hoverImage = _hoverImage;
+		this.clickImage = _clickImage;
+		this.hasBackgroundImage = true;
+		this.buttonTextColor = _buttonTextColor;
 	}
 
 	@Override
@@ -74,8 +94,10 @@ public class UIButton extends UIItem{
 			int uiXOffset = uiWidth / 2 - _g.getFontMetrics(uiItemFont).stringWidth(buttonText) / 2;
 			int uiYOffset = uiHeight / 2 + _g.getFontMetrics(uiItemFont).getHeight() / 2;
 			if(this.uiItemFont != null) _g.setFont(uiItemFont);
+			_g.setColor(buttonTextColor);
 			_g.drawString(buttonText, (int)uiX + uiXOffset, (int)uiY + uiYOffset);
 			_g.setFont(getDefaultFont());
+			_g.setColor(Color.black);
 		}else {
 			if(isHovering && !isClicked) _g.setColor(hoverColor);
 			if(!isHovering && !isClicked)_g.setColor(backgroundColor);
@@ -85,8 +107,10 @@ public class UIButton extends UIItem{
 			int uiXOffset = uiWidth / 2 - _g.getFontMetrics(uiItemFont).stringWidth(buttonText) / 2;
 			int uiYOffset = uiHeight / 2 + _g.getFontMetrics(uiItemFont).getHeight() / 2;
 			if(this.uiItemFont != null) _g.setFont(uiItemFont);
+			_g.setColor(buttonTextColor);
 			_g.drawString(buttonText, (int)uiX + uiXOffset, (int)uiY + uiYOffset);
 			_g.setFont(getDefaultFont());
+			_g.setColor(Color.black);
 		}
 	}
 	

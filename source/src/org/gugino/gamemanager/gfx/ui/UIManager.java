@@ -162,19 +162,25 @@ public class UIManager {
 						//UI width/height
 						int[] _buttonSize = getUIItemSizeFromAttribute(_currentElement);
 						
+						String _buttonText = getUIItemValueFromAttribute(_currentElement);
+						
+						Color _buttonTextColor = getUIItemTxtColorFromAttribute(_currentElement);
+						
 						UIButton _createdButton = null;
 						
 						if(_currentElement.hasAttribute("colors")) {
 							Color[] _colors = StringHelper.parseCommaSeperatedStringToColors(getUIItemColorsFromAttribute(_currentElement));
-							if(_colors.length >= 3) _createdButton = new UIButton(_buttonID, _uiX, _uiY, _buttonSize[0], _buttonSize[1], _colors[0], _colors[1], _colors[2]);
+							if(_colors.length >= 3) _createdButton = new UIButton(_buttonID, _uiX, _uiY, _buttonSize[0], _buttonSize[1], _colors[0], _colors[1], _colors[2], _buttonTextColor);
 							else if(showDebug) System.err.println("You must provide 3 colors (normal,hover,clicked) - note: don't put spaces between colors");
 						}else if(_currentElement.hasAttribute("srcs")) {
 							BufferedImage[] _images = StringHelper.parseCommaSeperatedStringToBufferedImages(getUIItemImageSrcFromAttribute(_currentElement));
-							_createdButton = new UIButton(_buttonID, _uiX, _uiY, _buttonSize[0], _buttonSize[1], _images[0], _images[1], _images[2]);
+							_createdButton = new UIButton(_buttonID, _uiX, _uiY, _buttonSize[0], _buttonSize[1], _images[0], _images[1], _images[2], _buttonTextColor);
 						}
 							
 						if(_createdButton != null) {
 							checkParentStateActivity(_createdButton, _parentState);
+							
+							_createdButton.setButtonText(_buttonText);
 							
 							_createdButton.setRenderLayer(_uiLayer);
 									
@@ -259,6 +265,30 @@ public class UIManager {
 		}
 		
 		return _id;	
+	}
+	
+	private Color getUIItemTxtColorFromAttribute(Element _element) {
+		if(_element.hasAttribute("txt-color")) {
+			String _txtColor = _element.getAttribute("txt-color");
+			
+			Color _color = Color.black;
+			
+			if(_txtColor.charAt(0) == '#') {
+				try {
+					_color = Color.decode(_txtColor);	
+				} catch (NumberFormatException e) {
+					_color = Color.black;
+					if(showDebug) System.err.println("Invaild color format!");
+				}
+			}
+			else _color = StringHelper.parseStringToColor(_txtColor);
+			
+			return _color;
+		}		
+		
+		if(showDebug) System.err.println("No 'txt-color' attribute found!");
+		
+		return Color.black;
 	}
 	
 	private Color getUIItemColorFromAttribute(Element _element) {
