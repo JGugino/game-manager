@@ -5,5 +5,6 @@ public enum UIItemType {
 	UIString,
 	UIButton,
 	UIImage,
-	UIInputField
+	UIInputField,
+	UIProgressBar
 }

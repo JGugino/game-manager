@@ -47,6 +47,18 @@ public class StringHelper {
 		return _colors;
 	}
 	
+	public static Color parseHEXStringToColor(String _string) {
+		Color _color = Color.black;
+		try {
+			_color = Color.decode(_string);	
+		} catch (NumberFormatException e) {
+			_color = Color.black;
+			System.err.println("Invaild color format! Defaulting to black");
+		}
+		
+		return _color;
+	}
+	
 	public static Color parseStringToColor(String _string) {
 		switch(_string) {
 			case "white": return Color.white;

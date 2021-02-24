@@ -12,6 +12,7 @@ import org.gugino.gamemanager.gfx.ui.uiitems.UIButton;
 import org.gugino.gamemanager.gfx.ui.uiitems.UIInputField;
 import org.gugino.gamemanager.gfx.ui.uiitems.UIItem;
 import org.gugino.gamemanager.gfx.ui.uiitems.UIPanel;
+import org.gugino.gamemanager.gfx.ui.uiitems.UIProgressBar;
 import org.gugino.gamemanager.gfx.ui.uiitems.UIString;
 import org.gugino.gamemanager.util.StringHelper;
 import org.w3c.dom.Document;
@@ -219,6 +220,37 @@ public class UIManager {
 								_createdUIItems.add(_createdInput);	
 							}
 							break;
+							//Creates UIProgressBar
+						case "UIProgressBar":
+							String _barID = "";
+							if(_uiID != null) _barID = checkUIItemIDForEmpty(_uiID, UIItemType.UIProgressBar);
+							else if(showDebug) { System.err.println("An 'id' attribute is required"); return;}
+									
+							//UI width/height
+							int[] _barSize = getUIItemSizeFromAttribute(_currentElement);
+							
+							UIProgressBar _createdBar = null;
+				
+							if(_currentElement.hasAttribute("bg-color")) {
+								Color[] _colors = getUIProgressBarColorsFromAttributes(_currentElement);
+								_createdBar = new UIProgressBar(_barID, _uiX, _uiY, _barSize[0], _barSize[1], _colors[0], _colors[1]);
+							}else if(_currentElement.hasAttribute("src")) {
+								BufferedImage[] _images = getUIProgressBarImagesFromAttributes(_currentElement);
+								_createdBar = new UIProgressBar(_barID, _uiX, _uiY, _barSize[0], _barSize[1], _images[0], _images[1]);
+							}
+								
+							if(_createdBar != null) {
+								checkParentStateActivity(_createdBar, _parentState);
+								
+								int[] _values = getUIProgressBarValuesFromAttributes(_currentElement);
+								_createdBar.setValues(_values[0], _values[1]);
+								
+								System.out.println(_createdBar.getMaxValue() + ", " + _createdBar.getCurrentValue());
+								_createdBar.setRenderLayer(_uiLayer);
+										
+								_createdUIItems.add(_createdBar);	
+							}
+							break;
 				}	
 			}
 		}
@@ -229,6 +261,55 @@ public class UIManager {
 	private void checkParentStateActivity(UIItem _item, int _parent) {
 		if(_parent != -1) _item.setParentID(_parent);
 		else _item.setEnabled(true);
+	}
+	
+	private int[] getUIProgressBarValuesFromAttributes(Element _element) {
+		int[] _values = new int[] {100, 100};
+		if(_element.hasAttribute("max-value")) {
+			String _maxString = _element.getAttribute("max-value");
+			_values[0] = Integer.parseInt(_maxString);
+		}else { _values[0] = 100; if(showDebug) System.err.println("No 'max-value' attribute found!");}
+		
+		if(_element.hasAttribute("current-value")) {
+			String _currentString = _element.getAttribute("current-value");
+			_values[1] = Integer.parseInt(_currentString);
+		}else { _values[1] = _values[0]; if(showDebug) System.err.println("No 'current-value' attribute found!");}
+		
+		return _values;
+	}
+	
+	private BufferedImage[] getUIProgressBarImagesFromAttributes(Element _element) {
+		BufferedImage[] _images = new BufferedImage[] {null, null};
+		
+		if(_element.hasAttribute("bg-image")) {
+			String _bgImageString = _element.getAttribute("bg-image");
+			_images[0] = StringHelper.parseStringToBufferedImage(_bgImageString);
+		}else {if(showDebug) System.err.println("No 'bg-image' attribute found!");}
+		
+		if(_element.hasAttribute("fill-image")) {
+			String _fillImageString = _element.getAttribute("fill-image");
+			_images[1] = StringHelper.parseStringToBufferedImage(_fillImageString);
+		}else {if(showDebug) System.err.println("No 'fill-image' attribute found!");}
+		
+		return _images;
+	}
+	
+	private Color[] getUIProgressBarColorsFromAttributes(Element _element) {
+		Color[] _colors = new Color[] {Color.black, Color.black};
+		
+		if(_element.hasAttribute("bg-color")) {
+			String _bgString = _element.getAttribute("bg-color");
+			if(_bgString.charAt(0) == '#') _colors[0] = StringHelper.parseHEXStringToColor(_bgString);
+			else _colors[0] = StringHelper.parseStringToColor(_bgString);
+		}else {if(showDebug) System.err.println("No 'bg-color' attribute found!");}
+		
+		if(_element.hasAttribute("fill-color")) {
+			String _fillString = _element.getAttribute("fill-color");
+			if(_fillString.charAt(0) == '#') _colors[1] = StringHelper.parseHEXStringToColor(_fillString);
+			else _colors[1] = StringHelper.parseStringToColor(_fillString);
+		}else {if(showDebug) System.err.println("No 'fill-color' attribute found!");}
+		
+		return _colors;
 	}
 	
 	//Returns a render layer enum from the inputed string
@@ -273,14 +354,7 @@ public class UIManager {
 			
 			Color _color = Color.black;
 			
-			if(_txtColor.charAt(0) == '#') {
-				try {
-					_color = Color.decode(_txtColor);	
-				} catch (NumberFormatException e) {
-					_color = Color.black;
-					if(showDebug) System.err.println("Invaild color format!");
-				}
-			}
+			if(_txtColor.charAt(0) == '#') {_color = StringHelper.parseHEXStringToColor(_txtColor);}
 			else _color = StringHelper.parseStringToColor(_txtColor);
 			
 			return _color;
