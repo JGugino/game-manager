@@ -44,7 +44,6 @@ public class UIProgressBar extends UIItem {
 			_g.fillRoundRect((int)uiX, (int)uiY, uiWidth, uiHeight, 2, 2);
 			_g.setColor(fillColor);
 			_g.fillRoundRect((int)uiX, (int)uiY, (int)((currentValue/maxValue) * uiWidth), uiHeight, 2, 2);
-			System.out.println((currentValue/maxValue) * uiWidth);
 			_g.setColor(Color.black);
 		}
 	}
