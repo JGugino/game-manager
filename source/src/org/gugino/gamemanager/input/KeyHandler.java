@@ -11,12 +11,16 @@ public class KeyHandler implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent _key) {
-		if(!pressedKeys[_key.getKeyCode()]) pressedKeys[_key.getKeyCode()] = true;
+		if(_key.getKeyCode() <= pressedKeys.length) {
+			if(!pressedKeys[_key.getKeyCode()]) pressedKeys[_key.getKeyCode()] = true;	
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent _key) {
-		if(pressedKeys[_key.getKeyCode()]) pressedKeys[_key.getKeyCode()] = false;
+		if(_key.getKeyCode() <= pressedKeys.length) {
+			if(pressedKeys[_key.getKeyCode()]) pressedKeys[_key.getKeyCode()] = false;	
+		}
 	}
 	
 	@Override

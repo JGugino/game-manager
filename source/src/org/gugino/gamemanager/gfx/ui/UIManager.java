@@ -245,7 +245,6 @@ public class UIManager {
 								int[] _values = getUIProgressBarValuesFromAttributes(_currentElement);
 								_createdBar.setValues(_values[0], _values[1]);
 								
-								System.out.println(_createdBar.getMaxValue() + ", " + _createdBar.getCurrentValue());
 								_createdBar.setRenderLayer(_uiLayer);
 										
 								_createdUIItems.add(_createdBar);	

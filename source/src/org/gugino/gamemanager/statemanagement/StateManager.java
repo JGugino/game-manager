@@ -3,6 +3,11 @@ package org.gugino.gamemanager.statemanagement;
 import java.awt.Graphics;
 import java.util.HashMap;
 
+import org.gugino.gamemanager.entities.Entity;
+import org.gugino.gamemanager.entities.EntityHandler;
+import org.gugino.gamemanager.gfx.ui.UIManager;
+import org.gugino.gamemanager.gfx.ui.uiitems.UIItem;
+
 public class StateManager {
 
 	private HashMap<Integer, State> states = new HashMap<>();
@@ -11,7 +16,7 @@ public class StateManager {
 	
 	private boolean showDebug = false;
 	
-	public static boolean switchingStates = false;
+	public static boolean switchingStates = false, updatingEntities = false, updatingUIItems = false;
 	
 	public StateManager() {}
 	public StateManager(boolean _showDebug) {this.showDebug = _showDebug;}	
@@ -53,39 +58,36 @@ public class StateManager {
 			states.get(_stateID).setEnabled(true);
 			currentStateID = _stateID;
 		}
-		
-//		updateEntityStates();
-//		updateUIStates();
+		switchingStates = false;
 	}	
 	
-//	private void updateEntityStates() {
-//		if(WorldState.entityHandler != null) {
-//			for(Entity _e : WorldState.entityHandler.getActiveEntities().values()) {
-//				if(_e instanceof Creature) {
-//					Creature _c = (Creature) _e;
-//					if(_c.getParentStateID() == currentStateID) {
-//						if(!_c.getEntityData().entityActive)_c.getEntityData().entityActive = true;
-//					}else if(_c.getParentStateID() != currentStateID){
-//						if(_c.getEntityData().entityActive)_c.getEntityData().entityActive = false;
-//					}
-//				}
-//			}	
-//		}
-//	}
+	public void updateEntityStates(EntityHandler _entityHandler) {
+		updatingEntities = true;
+		if(_entityHandler != null) {
+			for(Entity _e : _entityHandler.getActiveEntities().values()) {
+				if(!_e.getEntityData().entityActive) {
+					_e.getEntityData().entityActive = true;
+				}else if(_e.getParentStateID() != currentStateID){
+					if(_e.getEntityData().entityActive)_e.getEntityData().entityActive = false;
+				}
+			}
+		}	
+		updatingEntities = false;
+	}
 	
-//	private void updateUIStates() {
-//		if(GameStart.uiManager != null) {
-//			for(UIItem _i : GameStart.uiManager.getUiItems().values()) {
-//				if(_i.getParentID() == currentStateID) {
-//					if(!_i.isEnabled())_i.setEnabled(true);
-//				}else if(_i.getParentID() != currentStateID){
-//					if(_i.isEnabled())_i.setEnabled(false);
-//				}
-//			}	
-//			
-//			switchingStates = false;
-//		}
-//	}
+	public void updateUIItemStates(UIManager _uiManager) {
+		updatingUIItems = true;
+		if(_uiManager != null) {
+			for(UIItem _i : _uiManager.getUiItems().values()) {
+				if(_i.getParentID() == currentStateID) {
+					if(!_i.isEnabled())_i.setEnabled(true);
+				}else if(_i.getParentID() != currentStateID){
+					if(_i.isEnabled())_i.setEnabled(false);
+				}
+			}	
+		}
+		updatingUIItems = false;
+	}
 	
 	public State getStateByID(int _stateID) {
 		if(states.containsKey(_stateID)) return states.get(_stateID);

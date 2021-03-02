@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import org.gugino.gamemanager.GameManager;
 import org.gugino.gamemanager.gfx.ui.uiitems.interfaces.IClickable;
+import org.gugino.gamemanager.statemanagement.StateManager;
 
 public class UIButton extends UIItem{
 
@@ -71,13 +72,25 @@ public class UIButton extends UIItem{
 				if(isHovering) isHovering = false;
 			}else if(mouseInsideButton()) {
 				isHovering = true;
-				if(isHovering && GameManager.mouseHandler.mouseButtonPressed(MouseEvent.BUTTON1)) 
-				
-				if(!isClicked) {
-					isClicked = true;
-					if(buttonListener != null) buttonListener.onClick(this.uiID);
-					return;
-				}			
+				if(getParentID() != -1) {
+					if(!StateManager.updatingUIItems) {
+						if(isHovering && GameManager.mouseHandler.mouseButtonPressed(MouseEvent.BUTTON1)) {
+							if(!isClicked) {
+								isClicked = true;
+								if(buttonListener != null) buttonListener.onClick(this.uiID);
+								return;
+							}			
+						}	
+					}		
+				}else {
+					if(isHovering && GameManager.mouseHandler.mouseButtonPressed(MouseEvent.BUTTON1)) {
+						if(!isClicked) {
+							isClicked = true;
+							if(buttonListener != null) buttonListener.onClick(this.uiID);
+							return;
+						}			
+					}	
+				}
 			}
 			
 			if(!GameManager.mouseHandler.mouseButtonPressed(MouseEvent.BUTTON1)) if(isClicked) isClicked = false;
